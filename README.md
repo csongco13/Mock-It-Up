@@ -1,11 +1,14 @@
-# Mock It Up: Upload any image, make it your brand
+# Mock-It-Up: Upload any image, make it your brand
 ![MockItUp Home Screen](assets/screenshots/home.png)
 ![MockItUp Analysis Screen](assets/screenshots/analysis.png)
 ![MockItUp Prototype Screen](assets/screenshots/prototype.png)
 
+## Link to Mock-It-Up
+### Check out Mock-It-Up [here!](https://mock-it-up-three.vercel.app/)
+
 ## Description
 
-MockITUp is an AI-powered design prototyping mobile and web app that turns any image you captured or any image you upload into a website prototype, mobile prototype, blog prototype, and many more. Users can upload a photo or moodboard, and MockITUp analyzes the image to generate a color palette, visual mood, typography and font schemes, UI styling, and sample brand content.
+Mock-It-Up is an AI-powered design prototyping mobile and web app that turns any image you captured or any image you upload into a website prototype, mobile prototype, blog prototype, and many more. Users can upload a photo or moodboard, and MockITUp analyzes the image to generate a color palette, visual mood, typography and font schemes, UI styling, and sample brand content.
 
 
 ### Frontend
