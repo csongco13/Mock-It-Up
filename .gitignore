@@ -80,3 +80,5 @@ temp/
 *.log
 
 .claude/
+
+supabase/

@@ -9,8 +9,7 @@ const supabaseUrl =
   process.env.EXPO_PUBLIC_SUPABASE_URL;
 
 const supabasePublishableKey =
-  process.env
-    .EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 if (!supabaseUrl) {
   throw new Error(
@@ -42,23 +41,20 @@ export const supabase =
   );
 
 export async function ensureSession() {
-  const {
-    data: { session },
-  } =
-    await supabase.auth.getSession();
+  const { data: { session }, error:sessionError,
+  } = await supabase.auth.getSession();
 
-  if (session) {
-    return session;
-  }
+  if (sessionError) { throw sessionError; }
 
-  const {
-    data,
-    error,
-  } =
-    await supabase.auth.signInAnonymously();
+  if (session) { return session; }
 
-  if (error) {
-    throw error;
+  const {data,error,
+  } = await supabase.auth.signInAnonymously();
+
+  if (error) { throw error; }
+
+  if(!data.session){
+    throw new Error("Supabase was not able to create a user session")
   }
 
   return data.session;

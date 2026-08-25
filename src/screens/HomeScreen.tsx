@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
+  Pressable,
 } from "react-native";
 
 import {
@@ -44,49 +46,23 @@ export default function HomeScreen({
         }
       >
         <View style={styles.logoRow}>
-          <View style={styles.logo}>
-            <Text
-              style={
-                styles.logoSymbol
-              }
-            >
-              {"</>"}
-            </Text>
-          </View>
-
-          <Text
-            style={styles.logoText}
-          >
-            Mock
-            <Text
-              style={
-                styles.logoPink
-              }
-            >
-              IT
-            </Text>
-            <Text
-              style={
-                styles.logoTeal
-              }
-            >
-              Up
-            </Text>
-          </Text>
+            <Image source={require("../../assets/icons/logo.png")}
+              style={styles.logoImage}
+              resizeMode="contain"
+              />
+              
+            <Image source={require("../../assets/icons/mockitup-green.png")}
+              style={styles.logoTextImage}
+              resizeMode="center"
+              />
         </View>
 
         <View style={styles.hero}>
-          <Text
-            style={
-              styles.eyebrow
-            }
-          >
-            AI DESIGN ASSISTANT
-          </Text>
 
           <Text style={styles.title}>
-            Turn inspiration{"\n"}
-            into a prototype.
+            A Photo.{"\n"}
+            A Moodboard.{"\n"}
+            See Your Vision Unfold.
           </Text>
 
           <Text
@@ -94,53 +70,10 @@ export default function HomeScreen({
               styles.description
             }
           >
-            Upload a photo or
-            moodboard. MockITUp
-            analyzes the visual
-            direction and turns it
-            into website, mobile,
-            and blog concepts.
+            Upload a photo or moodboard. Mock-It-Up analyzes the visual
+            direction and turns it into website, mobile, and blog concepts.
           </Text>
         </View>
-
-        <Text
-          style={
-            styles.sectionTitle
-          }
-        >
-          Start creating
-        </Text>
-
-        <PrototypeChoice
-          icon="◉"
-          title="Take a photo"
-          description="Capture something that inspires your visual direction."
-          onPress={() =>
-            navigation.navigate(
-              "Upload",
-              {
-                source:
-                  "camera",
-              }
-            )
-          }
-        />
-
-        <PrototypeChoice
-          icon="▧"
-          title="Upload a moodboard"
-          description="Choose an image or moodboard from your photo library."
-          onPress={() =>
-            navigation.navigate(
-              "Upload",
-              {
-                source:
-                  "library",
-              }
-            )
-          }
-        />
-
         <View
           style={
             styles.infoCard
@@ -159,9 +92,7 @@ export default function HomeScreen({
               styles.infoTitle
             }
           >
-            Design direction,
-            generated from your
-            inspiration.
+            Design direction, generated from your inspiration.
           </Text>
 
           <Text
@@ -169,13 +100,72 @@ export default function HomeScreen({
               styles.infoBody
             }
           >
-            MockITUp studies color,
-            mood, typography, and UI
-            style, then applies the
-            result to reusable
-            prototype templates.
+            Mock-It-Up studies your image's composition, colors, and main theme. Mock-It-Up generates your palette scheme, font styling, and 
+            design direction to give you your UI Interface/Prototype.
           </Text>
         </View>
+
+        <Text
+          style={
+            styles.sectionTitle
+          }
+        >
+          Start creating
+        </Text>
+
+        <PrototypeChoice
+          icon={require("../../assets/icons/camera.png")}
+          title="Take a photo"
+          description="Capture something that inspires your visual direction."
+          onPress={() =>
+            navigation.navigate(
+              "Upload",
+              {
+                source:
+                  "camera",
+              }
+            )
+          }
+        />
+
+        <PrototypeChoice
+          icon={require("../../assets/icons/images.png")}
+          title="Upload a moodboard"
+          description="Choose an image or moodboard from your photo library."
+          onPress={() =>
+            navigation.navigate(
+              "Upload",
+              {
+                source:
+                  "library",
+              }
+            )
+          }
+        />
+
+        <Pressable
+          style={({ pressed }) => [
+            styles.savedButton,
+
+            pressed &&
+              styles.savedButtonPressed,
+          ]}
+          onPress={() =>
+            navigation.navigate(
+              "SavedPrototypes"
+            )
+          }
+        >
+          <Text
+            style={
+              styles.savedButtonText
+            }
+          >
+            View Saved Prototypes
+          </Text>
+        </Pressable>
+
+ 
       </ScrollView>
     </SafeAreaView>
   );
@@ -185,75 +175,37 @@ const styles =
   StyleSheet.create({
     safe: {
       flex: 1,
-
       backgroundColor:
         APP_COLORS.background,
     },
 
     container: {
-      padding: 24,
-
-      paddingBottom: 60,
+      padding: 26,
+      paddingBottom: 2,
     },
 
     logoRow: {
       marginTop: 8,
-
       flexDirection: "row",
-
       alignItems: "center",
+      gap:1,
     },
 
-    logo: {
-      width: 46,
-
-      height: 46,
-
-      borderRadius: 15,
-
-      alignItems: "center",
-
-      justifyContent:
-        "center",
-
-      backgroundColor:
-        APP_COLORS.darkAmethyst,
+    logoImage: {
+      width:55,
+      height:55,
+      borderRadius:15,
+      shadowColor: APP_COLORS.black
     },
 
-    logoSymbol: {
-      color:
-        APP_COLORS.powderBlush,
-
-      fontSize: 15,
-
-      fontWeight: "800",
-    },
-
-    logoText: {
-      marginLeft: 11,
-
-      fontSize: 22,
-
-      fontWeight: "800",
-
-      color:
-        APP_COLORS.darkAmethyst,
-    },
-
-    logoPink: {
-      color:
-        APP_COLORS.powderBlush,
-    },
-
-    logoTeal: {
-      color:
-        APP_COLORS.pacificCyan,
+    logoTextImage: {
+      width: 300,
+      height: 90,
     },
 
     hero: {
-      marginTop: 62,
-
-      marginBottom: 45,
+      marginTop: 12,
+      marginBottom: 15,
     },
 
     eyebrow: {
@@ -268,7 +220,7 @@ const styles =
     },
 
     title: {
-      marginTop: 15,
+      marginTop: 1,
 
       fontSize: 45,
 
@@ -295,7 +247,7 @@ const styles =
 
     sectionTitle: {
       marginBottom: 15,
-
+      marginTop: 15,
       fontSize: 20,
 
       fontWeight: "700",
@@ -305,14 +257,9 @@ const styles =
     },
 
     infoCard: {
-      marginTop: 20,
-
       padding: 24,
-
-      borderRadius: 28,
-
-      backgroundColor:
-        APP_COLORS.mutedTeal,
+      borderRadius: 10,
+      backgroundColor: APP_COLORS.mutedTeal,
     },
 
     infoEyebrow: {
@@ -343,6 +290,43 @@ const styles =
       marginTop: 12,
 
       lineHeight: 21,
+
+      color:
+        APP_COLORS.darkAmethyst,
+    },
+
+    savedButton: {
+      marginTop: 12,
+
+      marginBottom: 30,
+
+      paddingVertical: 16,
+
+      paddingHorizontal: 24,
+
+      alignItems: "center",
+
+      justifyContent: "center",
+
+      borderRadius: 12,
+
+      borderWidth: 1,
+
+      borderColor:
+        APP_COLORS.darkAmethyst,
+
+      backgroundColor:
+        APP_COLORS.surface,
+    },
+
+    savedButtonPressed: {
+      opacity: 0.8,
+    },
+
+    savedButtonText: {
+      fontSize: 15,
+
+      fontWeight: "700",
 
       color:
         APP_COLORS.darkAmethyst,
