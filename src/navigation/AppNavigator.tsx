@@ -13,6 +13,7 @@ import UploadScreen from "../screens/UploadScreen";
 import AnalysisScreen from "../screens/AnalysisScreen";
 import PrototypePickerScreen from "../screens/PrototypePickerScreen";
 import PrototypePreviewScreen from "../screens/PrototypePreviewScreen";
+import SavedPrototypesScreen from "../screens/SavedPrototypesScreen";
 
 import {
   APP_COLORS,
@@ -51,6 +52,8 @@ export type RootStackParamList = {
     prototypeType:
       PrototypeType;
   };
+
+  SavedPrototypes: undefined;
 };
 
 const Stack =
@@ -118,6 +121,12 @@ export default function AppNavigator() {
           name="PrototypePreview"
           component={
             PrototypePreviewScreen
+          }
+        />
+        <Stack.Screen
+          name="SavedPrototypes"
+          component={
+            SavedPrototypesScreen
           }
         />
       </Stack.Navigator>

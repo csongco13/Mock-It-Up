@@ -44,19 +44,15 @@ export default function AnalysisScreen({
       style={styles.safe}
     >
       <ScrollView
-        contentContainerStyle={
-          styles.container
-        }
-        showsVerticalScrollIndicator={
-          false
-        }
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
       >
         <Text
           style={
             styles.eyebrow
           }
         >
-          YOUR DESIGN DIRECTION
+          Here's Our Suggestion
         </Text>
 
         <Text style={styles.title}>
@@ -417,13 +413,9 @@ const styles =
 
     cardLabelTwo: {
       marginTop: 20,
-
       fontSize: 10,
-
       fontWeight: "800",
-
       letterSpacing: 1.5,
-
       color:
         APP_COLORS.pacificCyan,
     },
@@ -441,9 +433,7 @@ const styles =
 
     cardBody: {
       marginTop: 10,
-
       lineHeight: 21,
-
       color:
         APP_COLORS.textMuted,
     },

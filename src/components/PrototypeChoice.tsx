@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
+  ImageSourcePropType,
 } from "react-native";
 
 import {
@@ -12,7 +14,7 @@ import {
 } from "../constants/colors";
 
 interface Props {
-  icon: string;
+  icon: ImageSourcePropType;
   title: string;
   description: string;
   onPress: () => void;
@@ -27,17 +29,15 @@ export default function PrototypeChoice({
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [
+      style={({pressed}) => [
         styles.card,
-
-        pressed &&
-          styles.pressed,
+        pressed && styles.pressed,
       ]}
     >
       <View style={styles.iconBox}>
-        <Text style={styles.icon}>
-          {icon}
-        </Text>
+        <Image source={icon}
+          style={styles.icon}
+          resizeMode="contain"/>
       </View>
 
       <View style={styles.content}>
@@ -65,21 +65,15 @@ const styles =
   StyleSheet.create({
     card: {
       minHeight: 105,
-
       padding: 17,
-
       marginBottom: 14,
-
-      borderRadius: 24,
-
+      borderRadius: 12,
       flexDirection: "row",
-
       alignItems: "center",
-
       backgroundColor:
         APP_COLORS.surface,
 
-      borderWidth: 1,
+      borderWidth: 3,
 
       borderColor:
         APP_COLORS.border,
@@ -91,10 +85,8 @@ const styles =
 
     iconBox: {
       width: 58,
-
       height: 58,
-
-      borderRadius: 18,
+      borderRadius: 8,
 
       alignItems: "center",
 
@@ -106,21 +98,17 @@ const styles =
     },
 
     icon: {
-      fontSize: 27,
-
-      color:
-        APP_COLORS.darkAmethyst,
+      width: 25,
+      height: 25,
     },
 
     content: {
       flex: 1,
-
       marginLeft: 15,
     },
 
     title: {
       fontSize: 17,
-
       fontWeight: "700",
 
       color:

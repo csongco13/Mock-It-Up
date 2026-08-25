@@ -259,7 +259,7 @@ const styles =
     browser: {
       overflow: "hidden",
 
-      borderRadius: 18,
+      borderRadius: 12,
 
       borderWidth: 1,
 

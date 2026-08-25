@@ -61,15 +61,13 @@ export default function PrototypePickerScreen({
           }
         >
           We'll apply{" "}
-          {analysis.name} to a
-          reusable interface
-          template.
+          {analysis.name} to what you want to prototype.
         </Text>
 
         <PrototypeChoice
-          icon="◫"
+          icon={require("../../assets/icons/website.png")}
           title="Website"
-          description="Landing page with navigation, hero, features, and call to action."
+          description="Landing page with navigation, home page, features, and contact."
           onPress={() =>
             navigation.navigate(
               "PrototypePreview",
@@ -84,9 +82,9 @@ export default function PrototypePickerScreen({
         />
 
         <PrototypeChoice
-          icon="▯"
+          icon={require("../../assets/icons/mobile.png")}
           title="Mobile App"
-          description="A native-style app interface using your generated visual system."
+          description="A general view of a mobile app prototype interface."
           onPress={() =>
             navigation.navigate(
               "PrototypePreview",
@@ -101,9 +99,9 @@ export default function PrototypePickerScreen({
         />
 
         <PrototypeChoice
-          icon="▤"
+          icon={require("../../assets/icons/blog.png")}
           title="Blog"
-          description="Editorial homepage with featured content and article cards."
+          description="Blog homepage with articles and featured content."
           onPress={() =>
             navigation.navigate(
               "PrototypePreview",

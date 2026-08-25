@@ -24,7 +24,7 @@ export default function UploadCard({
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [
+      style={({pressed}) => [
         styles.card,
         pressed && styles.pressed,
       ]}

@@ -433,7 +433,7 @@ const styles =
 
       padding: 9,
 
-      borderRadius: 15,
+      borderRadius: 10,
 
       flexDirection: "row",
 

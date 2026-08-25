@@ -1,11 +1,12 @@
 import React, {
   useEffect,
+  useRef,
   useState,
 } from "react";
 
 import {
-  ActivityIndicator,
   Alert,
+  Animated,
   Image,
   SafeAreaView,
   StyleSheet,
@@ -45,6 +46,12 @@ interface SelectedImage {
   mimeType: string;
 }
 
+const loadingImages = [
+  require("../../assets/icons/palette.png"),
+  require("../../assets/icons/code.png"),
+  require("../../assets/icons/brush.png"),
+];
+
 export default function UploadScreen({
   navigation,
   route,
@@ -57,6 +64,19 @@ export default function UploadScreen({
   const [loading, setLoading] =
     useState(false);
 
+  const [
+    currentLoadingImage,
+    setCurrentLoadingImage,
+  ] = useState(0);
+
+  const fadeAnim = useRef(
+    new Animated.Value(1)
+  ).current;
+
+  const scaleAnim = useRef(
+    new Animated.Value(1)
+  ).current;
+
   const source =
     route.params.source;
 
@@ -67,6 +87,85 @@ export default function UploadScreen({
       openLibrary();
     }
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      setCurrentLoadingImage(0);
+
+      fadeAnim.setValue(1);
+      scaleAnim.setValue(1);
+
+      return;
+    }
+
+    const animateIcon = () => {
+      Animated.parallel([
+        Animated.timing(
+          fadeAnim,
+          {
+            toValue: 0,
+            duration: 350,
+            useNativeDriver: true,
+          }
+        ),
+
+        Animated.timing(
+          scaleAnim,
+          {
+            toValue: 0.85,
+            duration: 350,
+            useNativeDriver: true,
+          }
+        ),
+      ]).start(() => {
+        setCurrentLoadingImage(
+          (previousImage) =>
+            (previousImage + 1) %
+            loadingImages.length
+        );
+
+        scaleAnim.setValue(1.15);
+
+        Animated.parallel([
+          Animated.timing(
+            fadeAnim,
+            {
+              toValue: 1,
+              duration: 450,
+              useNativeDriver: true,
+            }
+          ),
+
+          Animated.spring(
+            scaleAnim,
+            {
+              toValue: 1,
+              friction: 5,
+              tension: 60,
+              useNativeDriver: true,
+            }
+          ),
+        ]).start();
+      });
+    };
+
+    const interval =
+      setInterval(
+        animateIcon,
+        1500
+      );
+
+    return () => {
+      clearInterval(interval);
+
+      fadeAnim.stopAnimation();
+      scaleAnim.stopAnimation();
+    };
+  }, [
+    loading,
+    fadeAnim,
+    scaleAnim,
+  ]);
 
   const handleResult = (
     result:
@@ -90,9 +189,7 @@ export default function UploadScreen({
 
     setImage({
       uri: asset.uri,
-
       base64: asset.base64,
-
       mimeType:
         asset.mimeType ||
         "image/jpeg",
@@ -102,8 +199,7 @@ export default function UploadScreen({
   const openLibrary =
     async () => {
       const permission =
-        await ImagePicker
-          .requestMediaLibraryPermissionsAsync();
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
 
       if (!permission.granted) {
         Alert.alert(
@@ -115,21 +211,20 @@ export default function UploadScreen({
       }
 
       const result =
-        await ImagePicker
-          .launchImageLibraryAsync(
-            {
-              mediaTypes: [
-                "images",
-              ],
+        await ImagePicker.launchImageLibraryAsync(
+          {
+            mediaTypes: [
+              "images",
+            ],
 
-              base64: true,
+            base64: true,
 
-              quality: 0.7,
+            quality: 0.7,
 
-              allowsEditing:
-                false,
-            }
-          );
+            allowsEditing:
+              false,
+          }
+        );
 
       handleResult(result);
     };
@@ -137,8 +232,7 @@ export default function UploadScreen({
   const openCamera =
     async () => {
       const permission =
-        await ImagePicker
-          .requestCameraPermissionsAsync();
+        await ImagePicker.requestCameraPermissionsAsync();
 
       if (!permission.granted) {
         Alert.alert(
@@ -150,8 +244,8 @@ export default function UploadScreen({
       }
 
       const result =
-        await ImagePicker
-          .launchCameraAsync({
+        await ImagePicker.launchCameraAsync(
+          {
             mediaTypes: [
               "images",
             ],
@@ -162,7 +256,8 @@ export default function UploadScreen({
 
             allowsEditing:
               false,
-          });
+          }
+        );
 
       handleResult(result);
     };
@@ -208,38 +303,40 @@ export default function UploadScreen({
   if (loading) {
     return (
       <SafeAreaView
-        style={
-          styles.loading
-        }
+        style={styles.loading}
       >
         <View
-          style={
-            styles.aiIcon
-          }
+          style={styles.aiIcon}
         >
-          <Text
-            style={
-              styles.aiIconText
+          <Animated.Image
+            source={
+              loadingImages[
+                currentLoadingImage
+              ]
             }
-          >
-            ✦
-          </Text>
-        </View>
+            style={[
+              styles.aiIconImage,
+              {
+                opacity:
+                  fadeAnim,
 
-        <ActivityIndicator
-          size="large"
-          color={
-            APP_COLORS.pacificCyan
-          }
-        />
+                transform: [
+                  {
+                    scale:
+                      scaleAnim,
+                  },
+                ],
+              },
+            ]}
+          />
+        </View>
 
         <Text
           style={
             styles.loadingTitle
           }
         >
-          Studying your
-          inspiration...
+          Studying your photo...
         </Text>
 
         <Text
@@ -248,8 +345,8 @@ export default function UploadScreen({
           }
         >
           MockITUp is analyzing
-          color, visual mood,
-          typography, and interface
+          the palette, visual mood,
+          typography, and UI
           direction.
         </Text>
       </SafeAreaView>
@@ -273,7 +370,11 @@ export default function UploadScreen({
           YOUR INSPIRATION
         </Text>
 
-        <Text style={styles.title}>
+        <Text
+          style={
+            styles.title
+          }
+        >
           Does this look right?
         </Text>
 
@@ -283,8 +384,7 @@ export default function UploadScreen({
           }
         >
           We'll use this image to
-          create your visual design
-          system.
+          create the UI prototype.
         </Text>
 
         <View
@@ -307,13 +407,12 @@ export default function UploadScreen({
                 styles.empty
               }
             >
-              <Text
+              <Image
+                source={require("../../assets/icons/upload.png")}
                 style={
-                  styles.emptyIcon
+                  styles.emptyIconImage
                 }
-              >
-                ✦
-              </Text>
+              />
 
               <Text
                 style={
@@ -404,7 +503,7 @@ const styles =
 
       overflow: "hidden",
 
-      borderRadius: 28,
+      borderRadius: 18,
 
       backgroundColor:
         APP_COLORS.surface,
@@ -432,15 +531,16 @@ const styles =
         "center",
     },
 
-    emptyIcon: {
-      fontSize: 38,
+    emptyIconImage: {
+      width: 48,
 
-      color:
-        APP_COLORS.powderBlush,
+      height: 48,
+
+      resizeMode: "contain",
     },
 
     emptyText: {
-      marginTop: 10,
+      marginTop: 12,
 
       color:
         APP_COLORS.textMuted,
@@ -449,7 +549,7 @@ const styles =
     loading: {
       flex: 1,
 
-      padding: 40,
+      paddingHorizontal: 24,
 
       alignItems: "center",
 
@@ -461,32 +561,28 @@ const styles =
     },
 
     aiIcon: {
-      width: 74,
+      width: 100,
 
-      height: 74,
+      height: 100,
 
-      marginBottom: 28,
-
-      borderRadius: 24,
+      marginBottom: 24,
 
       alignItems: "center",
 
       justifyContent:
         "center",
-
-      backgroundColor:
-        APP_COLORS.powderBlush,
     },
 
-    aiIconText: {
-      fontSize: 34,
+    aiIconImage: {
+      width: 85,
 
-      color:
-        APP_COLORS.darkAmethyst,
+      height: 85,
+
+      resizeMode: "contain",
     },
 
     loadingTitle: {
-      marginTop: 22,
+      marginTop: 0,
 
       fontSize: 25,
 
@@ -499,11 +595,13 @@ const styles =
     },
 
     loadingBody: {
-      marginTop: 10,
+      marginTop: 12,
+
+      maxWidth: 320,
 
       textAlign: "center",
 
-      lineHeight: 21,
+      lineHeight: 22,
 
       color:
         APP_COLORS.textMuted,
