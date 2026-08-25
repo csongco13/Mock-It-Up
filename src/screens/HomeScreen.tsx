@@ -234,13 +234,8 @@ const styles =
 
     description: {
       marginTop: 20,
-
-      maxWidth: 340,
-
       fontSize: 16,
-
       lineHeight: 25,
-
       color:
         APP_COLORS.textMuted,
     },
